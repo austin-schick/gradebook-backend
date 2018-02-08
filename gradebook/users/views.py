@@ -3,7 +3,7 @@ from rest_framework import generics, status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from gradebook.users.models import Entries
-from gradebook.users.serializers import TeacherSerializer
+from gradebook.users.serializers import TeacherSerializer, EntriesSerializer
 from django.http import JsonResponse
 import json
 
@@ -36,16 +36,11 @@ class AddEntry(generics.CreateAPIView):
     permission_classes = (IsAuthenticated, )
 
     def post(self, request):
-        def validate_request_data(rd):
-            return ("student" in rd and "assignment" in rd and
-                    "grade" in rd)
 
-        if not validate_request_data(request3data):
+        serializer = EntriesSerializer(data = request.data)
+
+        if not serializer.is_valid():
             return Response(status.HTTP_400_BAD_REQUEST)
 
-        new_entry = Entries(student = request.data['student'],
-                            assignment = request.data['assignment'],
-                            grade = request.data['grade'],
-                            teacher = request.user)
-        new_entry.save()
+        serializer.save(teacher=request.user)
         return Response(status.HTTP_200_OK)

@@ -10,4 +10,4 @@ class TeacherSerializer(serializers.ModelSerializer):
 class EntriesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Entries
-        fields = ('student', 'assignment', 'grade', 'teacher')
+        fields = ('student', 'assignment', 'grade', )
