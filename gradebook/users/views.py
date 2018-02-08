@@ -4,8 +4,6 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from gradebook.users.models import Entries
 from gradebook.users.serializers import TeacherSerializer, EntriesSerializer
-from django.http import JsonResponse
-import json
 
 class GetGradebook(generics.RetrieveAPIView):
     permission_classes = (IsAuthenticated, )
@@ -14,9 +12,7 @@ class GetGradebook(generics.RetrieveAPIView):
         queryset = request.user.entries_set.all().values("student",
                                                          "assignment",
                                                          "grade")
-        queryset_list = list(queryset)
-        out_dict = {"entries": queryset_list}
-
+        out_dict = {"entries": list(queryset)}
         return Response(out_dict, content_type="application/json")
 
 class AddTeacher(generics.CreateAPIView):
@@ -24,7 +20,7 @@ class AddTeacher(generics.CreateAPIView):
     serializer_class = TeacherSerializer
 
     def post(self, request):
-        serializer = TeacherSerializer(data=request.data)
+        serializer = self.get_serializer_class()(data=request.data)
 
         if not serializer.is_valid():
             return Response(status.HTTP_400_BAD_REQUEST)
@@ -34,10 +30,11 @@ class AddTeacher(generics.CreateAPIView):
 
 class AddEntry(generics.CreateAPIView):
     permission_classes = (IsAuthenticated, )
+    serializer_class = EntriesSerializer
 
     def post(self, request):
 
-        serializer = EntriesSerializer(data = request.data)
+        serializer = self.get_serializer_class()(data = request.data)
 
         if not serializer.is_valid():
             return Response(status.HTTP_400_BAD_REQUEST)
