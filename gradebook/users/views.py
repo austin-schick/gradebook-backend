@@ -24,17 +24,12 @@ class AddTeacher(generics.CreateAPIView):
     serializer_class = TeacherSerializer
 
     def post(self, request):
-        print(request.data)
+        serializer = TeacherSerializer(data=request.data)
 
-        def validate_request_data(rd):
-            return ("username" in rd and "password" in rd)
-
-        if not validate_request_data(request.data):
+        if not serializer.is_valid():
             return Response(status.HTTP_400_BAD_REQUEST)
 
-        user = User.objects.create_user(username = request.data['username'],
-                                        password = request.data['password'])
-
+        user = User.objects.create_user(**serializer.validated_data)
         return Response(status.HTTP_200_OK)
 
 class AddEntry(generics.CreateAPIView):
