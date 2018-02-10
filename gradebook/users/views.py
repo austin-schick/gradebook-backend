@@ -16,6 +16,10 @@ class GetGradebook(generics.RetrieveAPIView):
         return Response(out_dict, content_type="application/json")
 
 class AddTeacher(generics.CreateAPIView):
+    """
+    POST: Route for registering a new teacher
+    """
+
     permission_classes = (AllowAny, )
     serializer_class = TeacherSerializer
 

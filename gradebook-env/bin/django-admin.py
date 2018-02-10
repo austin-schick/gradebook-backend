@@ -1,4 +1,4 @@
-#!/Users/schickmeister/Projects/539-gradebook-backend/gradebook-env/bin/python3
+#!/Users/schickmeister/Projects/539/gradebook-env/bin/python3
 from django.core import management
 
 if __name__ == "__main__":
