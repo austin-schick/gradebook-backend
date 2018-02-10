@@ -6,6 +6,10 @@ from gradebook.users.models import Entries
 from gradebook.users.serializers import TeacherSerializer, EntriesSerializer
 
 class GetGradebook(generics.RetrieveAPIView):
+    """
+    GET: Returns a list of entries associated with the logged in teacher
+    """
+    
     permission_classes = (IsAuthenticated, )
 
     def get(self, request):
@@ -33,6 +37,10 @@ class AddTeacher(generics.CreateAPIView):
         return Response(status.HTTP_200_OK)
 
 class AddEntry(generics.CreateAPIView):
+    """
+    POST: Adds a new entry associated with the logged in teacher
+    """
+
     permission_classes = (IsAuthenticated, )
     serializer_class = EntriesSerializer
 
