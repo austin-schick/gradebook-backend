@@ -17,6 +17,11 @@ class Entries(models.Model):
     grade = models.FloatField()
     teacher = models.ForeignKey(User, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return ("%s's Gradebook Entry: %30s %10s %0.2f" %
+                (self.teacher.username, self.assignment, self.student,
+                 self.grade))
+
 class Assignment(models.Model):
     """
     Represents assignments. Pairings of teacher and assignment name are unique
@@ -30,3 +35,6 @@ class Assignment(models.Model):
         unique_together = (('teacher', 'name'),)
     teacher = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length = 60)
+
+    def __str__(self):
+        return ("%s's Assignment: %s" % (self.teacher.username, self.name))

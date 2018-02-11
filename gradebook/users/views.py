@@ -9,7 +9,6 @@ class GetGradebook(generics.RetrieveAPIView):
     """
     GET: Returns a list of entries associated with the logged in teacher
     """
-    
     permission_classes = (IsAuthenticated, )
 
     def get(self, request):
@@ -31,10 +30,10 @@ class AddTeacher(generics.CreateAPIView):
         serializer = self.get_serializer_class()(data=request.data)
 
         if not serializer.is_valid():
-            return Response(status.HTTP_400_BAD_REQUEST)
+            return Response({}, status=status.HTTP_400_BAD_REQUEST)
 
         user = User.objects.create_user(**serializer.validated_data)
-        return Response(status.HTTP_200_OK)
+        return Response({}, status=status.HTTP_200_OK)
 
 class AddEntry(generics.CreateAPIView):
     """
@@ -49,7 +48,7 @@ class AddEntry(generics.CreateAPIView):
         serializer = self.get_serializer_class()(data = request.data)
 
         if not serializer.is_valid():
-            return Response(status.HTTP_400_BAD_REQUEST)
+            return Response({}, status=status.HTTP_400_BAD_REQUEST)
 
         serializer.save(teacher=request.user)
-        return Response(status.HTTP_200_OK)
+        return Response({}, status=status.HTTP_200_OK)
