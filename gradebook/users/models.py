@@ -24,6 +24,7 @@ class Entries(models.Model):
 
 class Assignment(models.Model):
     """
+    Currently unused, and not linked to Entries
     Represents assignments. Pairings of teacher and assignment name are unique
 
     id -- django primary key
